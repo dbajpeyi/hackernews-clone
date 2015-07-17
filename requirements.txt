@@ -1,5 +1,6 @@
 Babel==1.3
 Django==1.8.3
+psycopg2
 Jinja2==2.7.3
 MarkupSafe==0.23
 PyTumblr==0.0.6
