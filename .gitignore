@@ -1,0 +1,10 @@
+.DS_Store
+db.sqlite3
+*.pyc
+static/
+migrations/
+Thumbs.db
+*/vendor
+ionic/platforms
+static/
+.coverage

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    {% include 'news/base.html' %}
+    <style>
+      .form-signin {
+        max-width: 550px;
+        padding: 15px;
+        margin: 0 auto;
+      }
+    </style>
+
+    <body>
+      <div class="container text-center">
+        <form class="form-signin" id="login_form" method="post" action="/news/login/">
+          {% csrf_token %}
+          {% load bootstrap %}
+          <h2 class="form-signin-heading">Login</h2>
+          <br>
+          <input type="text" name="username" class="form-control" placeholder="Username" value="" required autofocus>
+          <br>
+          <input type="password" name="password" class="form-control" placeholder="Password" value=""required>
+          <br>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <input type="hidden" name="submit" value="submit" />
+        </form>
+      </div>
+
+    </body>
+</html>
