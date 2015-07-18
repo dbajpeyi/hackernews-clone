@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.views.generic import View
 
 import requests
 import pdb
@@ -17,8 +18,12 @@ import pdb
 from news.models import *
 from news.forms import UserForm
 
-def index(request):
-    return HttpResponse('Hello')
+class HomeView(View):
+
+    def get(self, request):
+        return render(request,
+            'news/home.html', {}) 
+        
 
 
 def register(request):
