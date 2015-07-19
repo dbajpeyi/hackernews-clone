@@ -27,6 +27,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -111,6 +112,8 @@ NOSE_ARGS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+LOGIN_URL='/news/login/'
 
 ############
 #   KEYS   #

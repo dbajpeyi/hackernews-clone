@@ -61,7 +61,7 @@ def user_login(request):
                 return HttpResponse("Your user account is disabled.")
         else:
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, "news/login.html", {"error" : "Invalid login details"})
 
     else:
         if request.user.is_authenticated():

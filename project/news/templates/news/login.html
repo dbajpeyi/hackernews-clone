@@ -12,6 +12,9 @@
     <body>
       <div class="container text-center">
         <form class="form-signin" id="login_form" method="post" action="/news/login/">
+        {% if error %}
+          <span class="alert alert-danger">{{error}}</span>
+        {% endif %}
           {% csrf_token %}
           {% load bootstrap %}
           <h2 class="form-signin-heading">Login</h2>
