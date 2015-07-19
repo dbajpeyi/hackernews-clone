@@ -14,7 +14,7 @@ class UserProfile(models.Model):
 
 class Item(models.Model):
     
-    ext_id          = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    ext_id          = models.UUIDField(default=uuid.uuid4, editable=False)
     url             = models.URLField(max_length=400)
     hacker_news_url = models.URLField()
     points          = models.IntegerField()
@@ -31,7 +31,7 @@ class Item(models.Model):
 
 class DashboardItem(models.Model):
 
-    ext_id          = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    ext_id          = models.UUIDField(default=uuid.uuid4, editable=False)
     
     profile         = models.ForeignKey(UserProfile)
     item            = models.ForeignKey(Item)
