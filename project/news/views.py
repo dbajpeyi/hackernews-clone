@@ -13,7 +13,6 @@ from django.http import JsonResponse
 from django.views.generic import View
 
 import requests
-import pdb
 # Models
 from news.models import *
 from news.forms import UserForm
@@ -71,6 +70,4 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/news/')
-
-
 
