@@ -3,39 +3,72 @@ from news.models import Item
 import requests
 from bs4 import BeautifulSoup
 
+BASE_URL="https://news.ycombinator.com/"
+
 class Command(BaseCommand):
 
-    page = {}
-    td_count = 2
-    data_count = 0
+    data = {}
+    data_index = 0
 
     def handle(self, *args, **options):
         for i in range(1,4):
+            self.td_count = 2
             self.page_no = i
             self.parse()
         print self.page[1]
 
 
+    def build_news_url(self,tag):
+        return "%s%s"%(BASE_URL, tag['href'])
+
+    def title_url(self, tag):
+        return tag["href"]
+
+    def title_name(self, tag):
+        return tag.string
+
     def get_result(self): 
-        return requests.get('https://news.ycombinator.com/news?p=%s'% self.page_no)
+        return requests.get(BASE_URL, params = {'p': self.page_no})
+
+    def is_job_posting(self, row_2):
+        try:
+            row_2[1].find_all('a')[0].string
+        except IndexError:
+            return True
+
+    def parse_comment(self, row_2):
+        try:
+            comment = int(row_2[1].find_all('a')[2].string.split(" ")[0].strip())
+        except:
+            comment = 0
+        return comment
+
+    def parse_time(self, row_2):
+        number, unit, useless = row_2[1].find_all('a')[1].string.split(" ")
+        return number
+
+    def parse_row(self, row_1, row_2):
+        if self.is_job_posting(row_2):
+            return
+
+        row_1_a = row_1[2].a
+        
+        return {
+            'url'       : row_1_a["href"],
+            'title'     : row_1_a.string,
+            'hacker_news_url':self.build_news_url(row_2[1].find_all('a')[1]),
+            'points'    : int(row_2[1].find_all('span','score')[0].string.split(' ')[0].strip()),
+            'comments'  : self.parse_comment(row_2),
+            'posted_on' :  self.parse_time(row_2),
+
+        }
 
     def parse(self):
         soup = BeautifulSoup(self.get_result().text, 'html.parser')
-        for x in soup.find_all('table')[2].find_all('tr'):
-            self.data_count += 1 
-            self.page[self.data_count] = {'other_data' : None, 'url' : ''}
-            if self.td_count%3 == 0:
-                try:
-                    subtext = x.find_all('td','subtext')[0]
-                    self.page[self.data_count - 1]['other_data'] = subtext
-                except IndexError:
-                    pass
-
-            title = x.find_all('td', 'title')
-            if title:
-                try:
-                    self.page[self.data_count]['url'] = title[1].a
-                    print title[1].a
-                except IndexError:
-                    print 'Done page %s'%self.page_no
-            self.td_count +=1
+        rows = soup.find_all('table')[2].find_all('tr')
+        for x in xrange(0, len(rows) - 3, 3):
+            self.data_index += 1 
+            self.data[self.data_index] = {}
+            row_1 = rows[x].find_all('td')
+            row_2 = rows[x+1].find_all('td')
+            self.data[self.data_index] = self.parse_row(row_1, row_2)
