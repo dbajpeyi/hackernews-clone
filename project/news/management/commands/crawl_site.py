@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from news.models import Item
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime,timedelta
 
 BASE_URL="https://news.ycombinator.com/"
 
@@ -15,7 +16,7 @@ class Command(BaseCommand):
             self.td_count = 2
             self.page_no = i
             self.parse()
-        print self.page[1]
+        print self.data[1], self.data[2]
 
 
     def build_news_url(self,tag):
@@ -45,7 +46,13 @@ class Command(BaseCommand):
 
     def parse_time(self, row_2):
         number, unit, useless = row_2[1].find_all('a')[1].string.split(" ")
-        return number
+        number = int(number)
+        if unit == 'hours':
+            return datetime.now() - timedelta(hours=number)
+        elif unit == 'minutes':
+            return datetime.now() - timedelta(minutes=number)
+        else:
+            return datetime.now() - timedelta(days=number)
 
     def parse_row(self, row_1, row_2):
         if self.is_job_posting(row_2):
