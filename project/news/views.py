@@ -1,4 +1,3 @@
-# Django
 from django.shortcuts import render
 from django.contrib.auth import logout
 from django.template import RequestContext, loader
@@ -11,9 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import View
-
 import requests
-# Models
 from news.models import *
 from news.forms import UserForm
 
@@ -33,6 +30,7 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            UserProfile.objects.create(user = user)
             registered = True
         else:
             print user_form.errors
@@ -44,7 +42,6 @@ def register(request):
             'news/register.html',
             {'user_form': user_form, 'registered': registered} )
 
-#todo class based
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')

@@ -3,10 +3,8 @@ from django.contrib.auth.models import User
 import uuid
 
 class UserProfile(models.Model):
-    # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
 
-    # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
         return self.user.username
 
@@ -15,8 +13,9 @@ class UserProfile(models.Model):
 class Item(models.Model):
     
     ext_id          = models.UUIDField(default=uuid.uuid4, editable=False)
+    hacker_news_url = models.URLField(unique=True)
     url             = models.URLField(max_length=400)
-    hacker_news_url = models.URLField()
+    title           = models.CharField(max_length=400)
     points          = models.IntegerField()
     comments        = models.IntegerField()
     posted_on       = models.DateTimeField()
@@ -26,7 +25,7 @@ class Item(models.Model):
 
 
     def __unicode__(self):
-        return self.url
+        return self.hacker_news_url
 
 
 class DashboardItem(models.Model):
@@ -42,5 +41,8 @@ class DashboardItem(models.Model):
 
     
     def __unicode__(self):
-        return "%s - %s"%(self.user, self.item)
+        return "%s - %s"%(self.profile.user, self.item)
 
+    class Meta:
+        unique_together = ("profile", "item")
+    
