@@ -113,7 +113,7 @@ NOSE_ARGS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-LOGIN_URL='/news/login/'
+LOGIN_URL='/news/login'
 
 ############
 #   KEYS   #
