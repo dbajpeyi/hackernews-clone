@@ -16,13 +16,29 @@ from news.forms import UserForm
 
 class HomeView(View):
 
+    def get_items(self):
+        return DashboardItem.objects.select_related('item').filter(profile__user=self.request.user)
+
     def get(self, request):
-        items = DashboardItem.objects.select_related('item').filter(profile__user=request.user)
         return render(request,
-            'news/home.html', {'items' : items}) 
+            'news/home.html', {'items' : self.get_items()}) 
+
+    def delete(self):
+        DashboardItem.objects.filter(
+                ext_id__in = self.request.POST.getlist('item_id')
+            ).delete()
 
     def post(self, request):
-        print request.POST
+        if not request.POST.get('item_id'):
+            return render(request, 'news/home.html', {
+                'error' : 'Select items to mark them read!', 
+                'items' : self.get_items()
+            })
+
+        if 'delete' in request.POST:
+            self.delete()
+        else:
+            self.mark_as_read()
         return HttpResponseRedirect('/news/')
         
 
@@ -35,8 +51,10 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            UserProfile.objects.create(user = user)
+            profile = UserProfile.objects.create(user = user)
             registered = True
+            for item in Item.objects.all():
+                DashboardItem.objects.create(item = item, profile = profile)
         else:
             print user_form.errors
     else:
