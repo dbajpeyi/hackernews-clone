@@ -19,5 +19,5 @@
 - Register yourself, login and try it out!!
 -
 
-##Issues :
-    https://github.com/dbajpeyi/hackernews-clone/issues
+[https://github.com/dbajpeyi/hackernews-clone/issues](Issues/Todo):
+
