@@ -28,19 +28,20 @@ class HomeView(View):
         p = Paginator(items, RESULTS_PER_PAGE)
         return p
 
-    def get(self, request):
-        page = request.GET.get('page')
-        paginator = self.paginate_items(self.get_items())
+    def handle_pages(self, paginator):
+        page = self.request.GET.get('page')
         try:
-            items = paginator.page(page)
+            return paginator.page(page)
         except PageNotAnInteger:
-            items = paginator.page(1)
+            return paginator.page(1)
         except EmptyPage:
-            items = paginator.page(paginator.num_pages)
-            
-            
+            return paginator.page(paginator.num_pages)
+ 
+
+    def get(self, request):
+        paginator = self.paginate_items(self.get_items())
         return render(request,
-            'news/home.html', {'items' : items}) 
+            'news/home.html', {'items' : self.handle_pages(paginator)}) 
 
     def delete(self):
         DashboardItem.objects.filter(
@@ -54,10 +55,12 @@ class HomeView(View):
             item.save()
 
     def post(self, request):
+        page = request.GET.get('page')
+        paginator = self.paginate_items(self.get_items())
         if not request.POST.get('item_id'):
             return render(request, 'news/home.html', {
                 'error' : 'Need to select items to perform mark read / delete!', 
-                'items' : self.get_items()
+                'items' : self.handle_pages(paginator) 
             })
 
         if 'delete' in request.POST:

@@ -38,8 +38,12 @@
         <div class="table-responsive row">
               <form method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-success" name="mark_read">Mark as read</button>
-                <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                <button type="submit" class="btn btn-default" name="mark_read">
+                  <i class="fa fa-check-circle fa-lg text-success"></i> Mark as read
+                </button>
+                <button type="submit" class="btn btn-default" name="delete">
+                  <i class="fa fa-exclamation-circle fa-lg text-danger"></i> Delete
+                </button>
                 <table class="table table-bordred table-striped">
                 <thead>
                   <th style="width:5%;"></th>
