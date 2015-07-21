@@ -112,7 +112,7 @@ def user_login(request):
 
     else:
         if request.user.is_authenticated():
-            return HttpResponseRedirect('/news') 
+            return HttpResponseRedirect('/news/') 
         return render(request, 'news/login.html', {})
 
 def user_logout(request):
