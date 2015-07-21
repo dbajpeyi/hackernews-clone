@@ -17,8 +17,13 @@ from news.forms import UserForm
 class HomeView(View):
 
     def get(self, request):
+        items = DashboardItem.objects.select_related('item').filter(profile__user=request.user)
         return render(request,
-            'news/home.html', {}) 
+            'news/home.html', {'items' : items}) 
+
+    def post(self, request):
+        print request.POST
+        return HttpResponseRedirect('/news/')
         
 
 

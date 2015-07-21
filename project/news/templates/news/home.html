@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html>
     {% include 'news/base.html' %}
+    <style>
+     table { table-layout: fixed; }
+      table th, table td { overflow: hidden; }
+    </style>
 
     <body>
       <div class="container">
         <div class="page-header">
           <h2>Dashboard</h2>
         </div>
+        <div class="table-responsive">
+        <form method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Mark as read</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <table class="table table-bordred table-striped">
+          <thead>
+            <th style="width:5%;"></th>
+            <th style="width:5%;">#</th>
+            <th style="width:35%;">News</th>
+            <th style="width:35%;">Hackernews url</th>
+            <th style="width:10%;">Points</th>
+            <th style="width:10%;">Comments</th>
+          </thead>
+          <tbody>
+          {% for item in items %}
+            <tr>
+               <td><input type="checkbox" name="item_id" value="{{item.ext_id}}" /></td>
+               <td>{{forloop.counter}}</td>
+               <td><a href="{{item.item.url}}">{{item.item.title}}</a></td>
+               <td> <a href="{{item.item.hacker_news_url}}">{{item.item.hacker_news_url}}</td>
+               <td> {{item.item.points}}</td>
+               <td> {{item.item.comments}}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+        </form>
+        </div>
       </div>
-
     </body>
 </html>
