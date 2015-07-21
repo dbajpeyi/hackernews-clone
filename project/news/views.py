@@ -13,25 +13,50 @@ from django.views.generic import View
 import requests
 from news.models import *
 from news.forms import UserForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+RESULTS_PER_PAGE=20
 
 class HomeView(View):
 
     def get_items(self):
-        return DashboardItem.objects.select_related('item').filter(profile__user=self.request.user)
+        return DashboardItem.objects.select_related('item').filter(
+                profile__user=self.request.user).order_by(
+                    '-item__posted_on')
+
+    def paginate_items(self, items):
+        p = Paginator(items, RESULTS_PER_PAGE)
+        return p
 
     def get(self, request):
+        page = request.GET.get('page')
+        paginator = self.paginate_items(self.get_items())
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            items = paginator.page(1)
+        except EmptyPage:
+            items = paginator.page(paginator.num_pages)
+            
+            
         return render(request,
-            'news/home.html', {'items' : self.get_items()}) 
+            'news/home.html', {'items' : items}) 
 
     def delete(self):
         DashboardItem.objects.filter(
                 ext_id__in = self.request.POST.getlist('item_id')
             ).delete()
 
+    def mark_as_read(self):
+        items = DashboardItem.objects.filter(ext_id__in = self.request.POST.getlist('item_id'))
+        for item in items:
+            item.is_read = True
+            item.save()
+
     def post(self, request):
         if not request.POST.get('item_id'):
             return render(request, 'news/home.html', {
-                'error' : 'Select items to mark them read!', 
+                'error' : 'Need to select items to perform mark read / delete!', 
                 'items' : self.get_items()
             })
 

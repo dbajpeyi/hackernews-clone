@@ -15,6 +15,25 @@
           <div class="row text-danger">{{error}}</div>
           {% endif %}
           <br>
+        <div class="row text-center">
+          <ul class="pagination">
+            {% if items.has_previous %} 
+            <li>
+              <a href="?page={{items.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true"><i class="fa fa-backward"></i></span>
+              </a>
+            </li>
+            {% endif %}
+            <li><a>Page {{ items.number }} of {{ items.paginator.num_pages }}</a></li>
+            {% if items.has_next %}
+            <li>
+              <a href="?page={{items.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true"><i class="fa fa-forward"></i></span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
 
         <div class="table-responsive row">
               <form method="POST">
@@ -26,24 +45,53 @@
                   <th style="width:5%;"></th>
                   <th style="width:5%;">#</th>
                   <th style="width:35%;">News</th>
-                  <th style="width:35%;">Hackernews url</th>
-                  <th style="width:10%;">Points</th>
-                  <th style="width:10%;">Comments</th>
+                  <th style="width:30%;">Hackernews url</th>
+                  <th style="width:7.5%;">Points</th>
+                  <th style="width:7.5%;">Comments</th>
+                  <th style="width:10%;">Status</th>
                 </thead>
                 <tbody>
                 {% for item in items %}
                   <tr>
                      <td><input type="checkbox" name="item_id" value="{{item.ext_id}}" /></td>
                      <td>{{forloop.counter}}</td>
-                     <td><a href="{{item.item.url}}">{{item.item.title}}</a></td>
+                     <td><a href="{{item.item.url}}">{{item.item.title}}</a><br>  
+                       <small class="text-default">
+                         <i class="fa fa-clock-o text-danger"></i> {{item.item.posted_on}}
+                       </small>
+                     </td>
                      <td> <a href="{{item.item.hacker_news_url}}">{{item.item.hacker_news_url}}</td>
                      <td> {{item.item.points}}</td>
                      <td> {{item.item.comments}}</td>
+                     {% if item.is_read %}
+                      <td class="text-success"><i class="fa fa-check-circle fa-lg"></i> <small>Read</small></td>
+                     {% else %}
+                      <td class="text-primary"><i class="fa fa-exclamation-circle fa-lg"></i> <small>Not read!</small></td>
+                     {% endif %}
                   </tr>
                 {% endfor %}
                 </tbody>
                 </table>
               </form>
+        </div>
+        <div class="row text-center">
+          <ul class="pagination">
+            {% if items.has_previous %} 
+            <li>
+              <a href="?page={{items.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true"><i class="fa fa-backward"></i></span>
+              </a>
+            </li>
+            {% endif %}
+            <li><a>Page {{ items.number }} of {{ items.paginator.num_pages }}</a></li>
+            {% if items.has_next %}
+            <li>
+              <a href="?page={{items.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true"><i class="fa fa-forward"></i></span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
         </div>
       </div>
     </body>
