@@ -72,13 +72,12 @@ class Command(BaseCommand):
     def update_dashboard(self, item):
         print "Updating dashboard for users with item %s", item
         for user in UserProfile.objects.all():
-            item, created = DashboardItem.objects.get_or_create(
+            db_item, created = DashboardItem.objects.get_or_create(
                 profile = user, 
                 item    = item 
             )
             if not created:
                 print "Dashboard object alreadt exists"
-                print user,item
             else:
                 print "Created dashboard object for %s-%s"%(user,item)
 
@@ -101,6 +100,7 @@ class Command(BaseCommand):
             }
         )
         #if item already exists, update the upvotes and comments count
+        print item
         if not created:
             item.points   = data.get('points')
             item.comments = data.get('comments')
