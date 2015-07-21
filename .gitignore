@@ -2,7 +2,6 @@
 db.news
 db.sqlite3
 *.pyc
-static/
 migrations/
 Thumbs.db
 */vendor
