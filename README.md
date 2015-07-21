@@ -19,7 +19,5 @@
 - Register yourself, login and try it out!!
 -
 
-##Todos :
-- Move management command to celery tasks (?)
-- Write unittests
-
+##Issues :
+    https://github.com/dbajpeyi/hackernews-clone/issues
