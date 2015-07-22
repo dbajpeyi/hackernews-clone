@@ -18,7 +18,7 @@
 
 ##CELERY
     
-- `celery multi stop w1 -A settings -l info` to start celery daemon
+- `celery multi start w1 -A settings -l info` to start celery daemon
 - `celery -A settings beat` 
 -  Go to settings.py to change the schedule under CELERY_BEAT_SCHEDULER
 
