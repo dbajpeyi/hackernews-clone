@@ -13,6 +13,8 @@
 - `python manage.py makemigrations`
 - `python manage.py migrate`
 - `python manage.py runserver`- This might fail, need to define a `user.py` file for postgres uname and password can't be on github
+- - Go to `localhost:8000/register/`
+- Register yourself, login and try it out!!
 
 ##CELERY
     
@@ -22,8 +24,7 @@
 
 
 
-- Go to `localhost:8000/register/`
-- Register yourself, login and try it out!!
+
 
 
 [Issues/Todo](https://github.com/dbajpeyi/hackernews-clone/issues)
