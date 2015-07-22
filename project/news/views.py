@@ -21,7 +21,7 @@ class HomeView(View):
 
     def get_items(self):
         return DashboardItem.objects.select_related('item').filter(
-                profile__user=self.request.user).order_by(
+                profile__user=self.request.user, is_deleted=False).order_by(
                     '-item__posted_on')
 
     def paginate_items(self, items):
@@ -44,9 +44,9 @@ class HomeView(View):
             'news/home.html', {'items' : self.handle_pages(paginator)}) 
 
     def delete(self):
-        DashboardItem.objects.filter(
-                ext_id__in = self.request.POST.getlist('item_id')
-            ).delete()
+        for item in DashboardItem.objects.filter(ext_id__in = self.request.POST.getlist('item_id')):
+            item.is_deleted = True
+            item.save()
 
     def mark_as_read(self):
         items = DashboardItem.objects.filter(ext_id__in = self.request.POST.getlist('item_id'))
@@ -68,7 +68,6 @@ class HomeView(View):
         else:
             self.mark_as_read()
         return HttpResponseRedirect('/news/')
-        
 
 
 def register(request):

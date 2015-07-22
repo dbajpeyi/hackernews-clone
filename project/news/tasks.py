@@ -71,23 +71,15 @@ class CrawlHNSite(Task):
         }
 
     def update_dashboard(self, item):
-        print "Updating dashboard for users with item %s", item
         for user in UserProfile.objects.all():
             db_item, created = DashboardItem.objects.get_or_create(
                 profile = user, 
                 item    = item 
             )
-            if not created:
-                print "Dashboard object alreadt exists"
-            else:
-                print "Created dashboard object for %s-%s"%(user,item)
-
 
     def create_item(self):
-        print "Creating news item"
         data = self.data[self.data_index] 
         if data.get('job'):
-            print "Job posting, not interested"
             return 
 
         item, created = Item.objects.get_or_create(
@@ -101,17 +93,14 @@ class CrawlHNSite(Task):
             }
         )
         #if item already exists, update the upvotes and comments count
-        print item
         if not created:
             item.points   = data.get('points')
             item.comments = data.get('comments')
             item.save()
-        print "Item created %s"%item
         self.update_dashboard(item)
         
 
     def parse_and_create(self):
-        print "Parsing"
         soup = BeautifulSoup(self.get_result().text, 'html.parser')
         rows = soup.find_all('table')[2].find_all('tr')
         for x in xrange(0, len(rows) - 3, 3):

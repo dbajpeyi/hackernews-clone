@@ -35,6 +35,7 @@ class DashboardItem(models.Model):
     profile         = models.ForeignKey(UserProfile)
     item            = models.ForeignKey(Item)
     is_read         = models.BooleanField(default=False)
+    is_deleted      = models.BooleanField(default=False)
 
     created         = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
