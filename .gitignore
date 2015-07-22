@@ -2,7 +2,6 @@
 db.news
 db.sqlite3
 *.pyc
-migrations/
 Thumbs.db
 */vendor
 ionic/platforms
