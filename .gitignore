@@ -10,3 +10,6 @@ project/static/
 vendor/
 *.swp
 project/settings/user.py
+celerybeat-schedule
+celerybeat.pid
+
