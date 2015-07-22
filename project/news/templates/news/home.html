@@ -44,7 +44,7 @@
                 <button type="submit" class="btn btn-default" name="delete">
                   <i class="fa fa-exclamation-circle fa-lg text-danger"></i> Delete
                 </button>
-                <table class="table table-bordred table-striped">
+                <table class="table table-bordred">
                 <thead>
                   <th style="width:5%;"></th>
                   <th style="width:5%;">#</th>
@@ -56,6 +56,25 @@
                 </thead>
                 <tbody>
                 {% for item in items %}
+                  {% if item.is_read %}
+                  <tr class="danger">
+                     <td><input type="checkbox" name="item_id" value="{{item.ext_id}}" /></td>
+                     <td>{{forloop.counter}}</td>
+                     <td><a href="{{item.item.url}}">{{item.item.title}}</a><br>  
+                       <small class="text-default">
+                         <i class="fa fa-clock-o text-danger"></i> {{item.item.posted_on}}
+                       </small>
+                     </td>
+                     <td> <a href="{{item.item.hacker_news_url}}">{{item.item.hacker_news_url}}</td>
+                     <td> {{item.item.points}}</td>
+                     <td> {{item.item.comments}}</td>
+                     {% if item.is_read %}
+                      <td class="text-danger"><i class="fa fa-check-circle fa-lg"></i> <small>Read</small></td>
+                     {% else %}
+                      <td class="text-primary"><i class="fa fa-exclamation-circle fa-lg"></i> <small>Not read!</small></td>
+                     {% endif %}
+                  </tr>
+                  {% else %}
                   <tr>
                      <td><input type="checkbox" name="item_id" value="{{item.ext_id}}" /></td>
                      <td>{{forloop.counter}}</td>
@@ -68,11 +87,12 @@
                      <td> {{item.item.points}}</td>
                      <td> {{item.item.comments}}</td>
                      {% if item.is_read %}
-                      <td class="text-success"><i class="fa fa-check-circle fa-lg"></i> <small>Read</small></td>
+                      <td class="text-danger"><i class="fa fa-check-circle fa-lg"></i> <small>Read</small></td>
                      {% else %}
-                      <td class="text-primary"><i class="fa fa-exclamation-circle fa-lg"></i> <small>Not read!</small></td>
+                      <td class="text-success"><i class="fa fa-exclamation-circle fa-lg"></i> <small>New</small></td>
                      {% endif %}
                   </tr>
+                  {% endif %}
                 {% endfor %}
                 </tbody>
                 </table>
