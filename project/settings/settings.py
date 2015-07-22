@@ -9,9 +9,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from __future__ import absolute_import
+from datetime import timedelta
 import os
+from celery.schedules import crontab
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -168,3 +173,16 @@ DROPBOX_APP_SECRET = 'xx0virsvtghxlui'
 
 FOURSQUARE_APP_ID = '2V342MA2PZQEKABT450WJQKKRHV0QPFMOUBA1ZHXKWZ5YZ1Y'
 FOURSQUARE_APP_SECRET = 'PC0O1JQWP24EAPPLXNRIJVVBN5D2DW3XD5GJGGSQWIESYN1B'
+
+#Celery settings
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERYBEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'news.tasks.CrawlHNSite',
+#        'schedule': crontab(second='*/30'),
+        'schedule': timedelta(seconds=30), 
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
