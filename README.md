@@ -13,11 +13,18 @@
 - `python manage.py makemigrations`
 - `python manage.py migrate`
 - `python manage.py runserver`- This might fail, need to define a `user.py` file for postgres uname and password can't be on github
--  Run scraper `python manage.py crawl_site` 
+
+##CELERY
+    
+- `celery multi stop w1 -A settings -l info` to start celery daemon
+- `celery -A settings beat` 
+-  Go to settings.py to change the schedule under CELERY_BEAT_SCHEDULER
+
+
 
 - Go to `localhost:8000/register/`
 - Register yourself, login and try it out!!
--
+
 
 [Issues/Todo](https://github.com/dbajpeyi/hackernews-clone/issues)
 

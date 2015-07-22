@@ -180,8 +180,7 @@ BROKER_URL = 'redis://localhost:6379/0'
 CELERYBEAT_SCHEDULE = {
     'add-every-30-seconds': {
         'task': 'news.tasks.CrawlHNSite',
-#        'schedule': crontab(second='*/30'),
-        'schedule': timedelta(seconds=30), 
+        'schedule': crontab(hour='*'),
     },
 }
 
