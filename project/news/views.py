@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
@@ -67,7 +68,7 @@ class HomeView(View):
             self.delete()
         else:
             self.mark_as_read()
-        return HttpResponseRedirect('/news/')
+        return HttpResponseRedirect("{0}?page={1}".format(reverse('home'), page))
 
 
 def register(request):
