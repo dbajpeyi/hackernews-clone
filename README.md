@@ -10,7 +10,6 @@
 - `cd hackernews-clone && pip install -r requirements.txt`
 - `bower install`
 - `cd project && python manage.py collectstatic`
-- `python manage.py makemigrations`
 - `python manage.py migrate`
 - `python manage.py runserver`- This might fail, need to define a `user.py` file for postgres uname and password can't be on github
 - - Go to `localhost:8000/register/`
