@@ -2,9 +2,9 @@
   "name": "hackernews-clone",
   "version": "0.0.0",
   "authors": [
-    "David Leonard <sephirothcloud1025@yahoo.com>"
+    "Deepankar Bajpeyi (dbajpeyi@gmail.com)"
   ],
-  "description": "Django boilerplate project for hackathons",
+  "description": "HackerNews clone",
   "keywords": [
     "Django",
     "Python",
